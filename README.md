@@ -14,7 +14,6 @@ This project demonstrates:
 ## Folder Structure
 - `batch_scripts/`: Bash scripts used to run variant calling steps
 - `python_scripts/`: Scripts for filtering and summarizing insertion/deletion data
-- `r_scripts/`: Scripts for statistical analysis
-- `results_example/`: Example output data tables
+
 
 ---
