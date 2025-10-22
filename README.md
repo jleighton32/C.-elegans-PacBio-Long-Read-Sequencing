@@ -1,7 +1,7 @@
 # C.-elegans-PacBio-Long-Read-Sequencing
 We performed a PacBio long read sequencing project on fcd-2 C. elegans mutants to look for structural variants. 
 
-This repository documents my process for calling and analyzing structural variants and SNPs in *C. elegans* using PacBio and Illumina data.
+This repository documents my process for calling and analyzing structural variants and SNPs in *C. elegans* using PacBio data.
 
 ## Overview
 This project demonstrates:
