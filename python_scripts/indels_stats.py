@@ -26,12 +26,11 @@ def GetGeneAccession(variant, info_elements):
 if __name__ == "__main__":
     vcf_file = sys.argv[1]
     sample = sys.argv[2]
-    variant_size_threshold = int(sys.argv[3])
-    output_dir = sys.argv[4]
+    output_dir = sys.argv[3]
 
-    # create output summary files
-    del_out = open(os.path.join(output_dir, f'{sample}_deletions_{variant_size_threshold}_info.tsv'), 'w')
-    ins_out = open(os.path.join(output_dir, f'{sample}_insertions_{variant_size_threshold}_info.tsv'), 'w')
+    # create a single output summary file
+    summary_out = open(os.path.join(output_dir, f'{sample}_variants_info.tsv'), 'w')
+    summary_out.write("Sample\tLine\tVariant\tReference\tSize\tAccession\tType\n")
     
     # store size of insertions and deletions
     insertions = []
@@ -60,36 +59,32 @@ if __name__ == "__main__":
                     if len(v) > len(ref):
                         v_size = len(v) - len(ref)
                         v_type = 'insertion'
-                    if v_size >= variant_size_threshold:
+
+
+
+
+                    if v_type:
                         num_variants += 1
                         accession = GetGeneAccession(v, info_elements)
                         if 'unassigned_transcript_' in accession:
                             accession = 'NA'
-                        if v_type == 'insertion':
-                            ins_out.write(f'{sample}\t{count}\t{v}\t{ref}\t{v_size}\t{accession}\n')
-                            insertions.append(v_size)
-                        elif v_type == 'deletion':
-                            del_out.write(f'{sample}\t{count}\t{v}\t{ref}\t{v_size}\t{accession}\n')  
-                            deletions.append(v_size)
+                  
                 if len(variants) > 1:
                     mul_variants += 1
-    if insertions:
-        print("Min insertion size:", min(insertions))
-    else:
-        print("NO insertions found.")
-    if deletions:
-        print("Min deletion size:", min(deletions))
-    else:
-        print("NO deletions found.")
-    
-    print(f'Number of multiple variants at a given location: {mul_variants}')
+    # print basic stats
+    print(f"Total variants: {num_variants}")
+    print(f"Multiple variant positions: {mul_variants}")
 
-    # save variants size to files
-    with open(os.path.join(output_dir, f'{sample}_deletions_{variant_size_threshold}_count.tsv'), 'w') as f:
-        f.write('\n'.join([str(i) for i in deletions]))
-    
-    with open(os.path.join(output_dir, f'{sample}_insertions_{variant_size_threshold}_count.tsv'), 'w') as f:
-        f.write('\n'.join([str(i) for i in insertions]))
+    if insertions:
+        print(f"Insertions: {len(insertions)} (min={min(insertions)}, max={max(insertions)})")
+    else:
+        print("No insertions found.")
+
+    if deletions:
+        print(f"Deletions: {len(deletions)} (min={min(deletions)}, max={max(deletions)})")
+    else:
+        print("No deletions found.")
+
 
     ## create boxplots
     #plt.figure(figsize=(8, 6))
