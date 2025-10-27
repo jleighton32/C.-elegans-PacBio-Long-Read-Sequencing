@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     # create a single output summary file
     summary_out = open(os.path.join(output_dir, f'{sample}_variants_info.tsv'), 'w')
-    summary_out.write("Sample\tLine\tVariant\tReference\tSize\tAccession\tType\n")
+    summary_out.write("Sample\tVariant\tReference\tSize\tAccession\tType\n")
     
     # store size of insertions and deletions
     insertions = []
@@ -68,7 +68,8 @@ if __name__ == "__main__":
                         accession = GetGeneAccession(v, info_elements)
                         if 'unassigned_transcript_' in accession:
                             accession = 'NA'
-                  
+     # Write variant info to summary file
+    summary_out.write(f"{sample}\t{v}\t{ref}\t{v_size}\t{accession}\t{v_type}\n")    
                 if len(variants) > 1:
                     mul_variants += 1
     # print basic stats
